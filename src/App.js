@@ -16,16 +16,16 @@ function App() {
       item.isAnswered = false;
       item.isCorrect = false;
       item.clickedOption = null;
-      item.id = new Date().getTime()
     })
     setQuestions(result)
-
+    console.log(questions)
+    console.log(result) // burada question ve result aynı değerde olmuş oluyor ? boş array geliyor, eğer öylese aşağıdaki fonksiyon neden çalışıyor. 
   }
-  console.log(questions)
+
   const checkTheUser = (index, answer) => {
     const whatTheUserAnswered = [...questions]
     const indexAnswered = whatTheUserAnswered[index]
-    console.log(index)
+
     if (indexAnswered.incorrect_answers.includes(answer)) {
       indexAnswered.isAnswered = true;
     }
@@ -33,16 +33,12 @@ function App() {
       indexAnswered.isCorrect = true
     }
     indexAnswered.clickedOption = answer
-
-
     setQuestions(whatTheUserAnswered)
-
   }
-
   useEffect(() => {
     fetchData()
   }, [])
-  return (
+  return ( // questions yerine result yazabilir miydik
     <div>
       <Questions result={questions} checkTheUser={checkTheUser}></Questions>
     </div>
