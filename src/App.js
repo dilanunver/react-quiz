@@ -22,6 +22,19 @@ function App() {
     console.log(result) // burada question ve result aynı değerde olmuş oluyor ? boş array geliyor, eğer öylese aşağıdaki fonksiyon neden çalışıyor. 
   }
 
+  const fetchingForPlayButton = async () => {
+    setQuestions([])
+    const buttonResponse = await fetch(url);
+    const jsonResponseforButton = await buttonResponse.json()
+
+    const resultForButton = jsonResponseforButton.results
+    setQuestions(resultForButton)
+  }
+
+  useEffect(() => {
+    fetchingForPlayButton()
+  }, [])
+
   const checkTheUser = (index, answer) => {
     const whatTheUserAnswered = [...questions]
     const indexAnswered = whatTheUserAnswered[index]
@@ -38,9 +51,10 @@ function App() {
   useEffect(() => {
     fetchData()
   }, [])
-  return ( // questions yerine result yazabilir miydik
+
+  return ( //  questions yerine result yazabilir miydik
     <div>
-      <Questions result={questions} checkTheUser={checkTheUser}></Questions>
+      <Questions result={questions} checkTheUser={checkTheUser} fetchingForPlayButton={fetchingForPlayButton}></Questions>
     </div>
   );
 }

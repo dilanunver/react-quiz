@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const Questions = ({ result, checkTheUser }) => {
+const Questions = ({ result, checkTheUser, fetchingForPlayButton }) => {
 
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [showQuizDone, setShowQuizDone] = useState(false)
@@ -11,6 +11,12 @@ const Questions = ({ result, checkTheUser }) => {
     )
   }
   const refreshPage = () => {
+    setCurrentQuestion(0)
+    setShowQuizDone(false)
+    return;
+  }
+  const playAgain = () => {
+    fetchingForPlayButton();
     setCurrentQuestion(0)
     setShowQuizDone(false)
     return;
@@ -54,7 +60,6 @@ const Questions = ({ result, checkTheUser }) => {
         answeredEmpty.push({ 'item': a.clickedOption, 'index': index + 1, 'rightAnswer': a.correct_answer })
       }
       if (a.clickedOption !== a.correct_answer && a.clickedOption !== null) {
-        console.log(a.correct_answer)
         answeredWrong.push({ 'item': a.clickedOption, 'index': index + 1, 'rightAnswer': a.correct_answer })
       }
     })
@@ -77,9 +82,6 @@ const Questions = ({ result, checkTheUser }) => {
         })}</h5>
 
         <h5>your wrong result {answeredWrong.map((item) => {
-
-          console.log(answeredWrong)
-          console.log(item)
           return (
             <div>
               <ul>
@@ -105,7 +107,8 @@ const Questions = ({ result, checkTheUser }) => {
           )
 
         })}</h5>
-        <button onClick={refreshPage}>again</button>
+        <button onClick={refreshPage}>look at my answers</button>
+        <button onClick={playAgain}>play again</button>
       </div>
     )
   }
