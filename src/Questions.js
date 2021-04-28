@@ -31,7 +31,6 @@ const Questions = ({ result, checkTheUser }) => {
   if (showQuizDone) {
     let score = 0;
     result.forEach(r => {
-      console.log(r)
       if (r.isCorrect) {
         score++
       }
@@ -43,19 +42,20 @@ const Questions = ({ result, checkTheUser }) => {
       }
     })
     let answeredCorrect = [];
-    let answeredWrong = []
-    result.forEach(a => {
-      console.log(a.clickedOption)
+    let answeredWrong = [];
+    let answeredEmpty = [];
+    result.forEach((a, index) => {
       if (a.clickedOption === a.correct_answer) {
-        answeredCorrect.push(a.clickedOption)
+        answeredCorrect.push({ 'item': a.clickedOption, 'index': index + 1 })
         answeredCorrect.join(', ')
-        console.log(answeredCorrect)
+
       }
       if (a.clickedOption === null) {
-        a.clickedOption = ''
-        answeredCorrect.push(a.clickedOption)
-      } else {
-        answeredWrong.push(a.clickedOption)
+        answeredEmpty.push({ 'item': a.clickedOption, 'index': index + 1, 'rightAnswer': a.correct_answer })
+      }
+      if (a.clickedOption !== a.correct_answer && a.clickedOption !== null) {
+        console.log(a.correct_answer)
+        answeredWrong.push({ 'item': a.clickedOption, 'index': index + 1, 'rightAnswer': a.correct_answer })
       }
     })
     return (
@@ -63,23 +63,48 @@ const Questions = ({ result, checkTheUser }) => {
         <h4>quiz is done</h4>
         <h5> your score is {score} / {result.length}</h5>
         <h5> your empty result : {notAnswered}</h5>
-        <h5>your correct result {answeredCorrect.map((item, index) => {
-          console.log(result[index].isCorrect)
-          if (result[index].isCorrect) {
-            return (
-              <div>
-                <ul>
-                  <li>
-                    <h6>question : {index + 1}</h6> {item}
-                  </li>
-                </ul>
-              </div>
-            )
-          }
+        <h5>your correct result {answeredCorrect.map((item) => {
+          return (
+            <div>
+              <ul>
+                <li>
+                  <h6>question : {item.index}</h6> {item.item}
+                </li>
+              </ul>
+            </div>
+          )
+
         })}</h5>
 
+        <h5>your wrong result {answeredWrong.map((item) => {
 
+          console.log(answeredWrong)
+          console.log(item)
+          return (
+            <div>
+              <ul>
+                <li>
+                  <h6>question : {item.index}</h6> {item.item} / but right answer was: {item.rightAnswer}
+                </li>
+              </ul>
+            </div>
+          )
 
+        })}</h5>
+
+        <h5>your empty result {answeredEmpty.map((item) => {
+
+          return (
+            <div>
+              <ul>
+                <li>
+                  <h6>question : {item.index}</h6> empty / but right answer was: {item.rightAnswer}
+                </li>
+              </ul>
+            </div>
+          )
+
+        })}</h5>
         <button onClick={refreshPage}>again</button>
       </div>
     )
@@ -100,12 +125,10 @@ const Questions = ({ result, checkTheUser }) => {
         if (result[currentQuestion].isAnswered && result[currentQuestion].clickedOption === option) {
           if (result[currentQuestion].isCorrect) {
             buttonStyle = { backgroundColor: 'green', padding: '10px', color: 'white' }
-
           } else {
             buttonStyle = { backgroundColor: 'red', padding: '10px', color: 'white' }
           }
         }
-
         return (
           <div>
             <button disabled={result[currentQuestion].isAnswered}
@@ -118,21 +141,12 @@ const Questions = ({ result, checkTheUser }) => {
             </button>
           </div>
         )
-
       })}
-
       <button onClick={nextButton}>
         next
       </button>
     </div >
-
   )
-
-
 }
-
-
-
-
 
 export default Questions
