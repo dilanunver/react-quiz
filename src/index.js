@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-
 import reportWebVitals from './reportWebVitals';
-import QuizandApp from './QuizandApp';
+import QuizandApp from './components/QuizandApp';
 
 ReactDOM.render(
   <React.StrictMode>

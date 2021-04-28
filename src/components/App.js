@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Questions from './Questions'
+import Questions from '../components/Questions'
 
 const url = 'https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple'
 
